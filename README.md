@@ -27,9 +27,12 @@ Before running the application, you must configure the `config.json` file with t
 
 ```json
 {
-  "azure_devops_url": "https://dev.azure.com/your-organization",
-  "personal_access_token": "your-pat-token",
-  "team_projects": ["Project1", "Project2"]
+    "azureDevOpsUrl": "https://dev.azure.com/your-organization",
+    "personalAccessToken": "your pat",
+    "teamProjects": [
+        "Team Project A",
+        "Team Project B"
+    ]
 }
 ```
 
