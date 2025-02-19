@@ -1,0 +1,18 @@
+<div style="width: 100%;">
+    <div class="title">Most Developer Commits (24H)</div>
+    
+    <div *ngIf="initializing" class="loader-area">
+        <span class="loader"></span>
+    </div>
+
+    <div *ngIf="!initializing" class="info">
+        <table>
+            <ng-container *ngFor="let commit of lastValue">
+                <tr>
+                    <td>{{commit.user}}</td>
+                    <td style="text-align: right;">{{commit.count}}</td>
+                </tr>
+            </ng-container>
+        </table>
+    </div>
+</div>

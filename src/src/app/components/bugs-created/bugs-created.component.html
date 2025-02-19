@@ -1,0 +1,11 @@
+<div style="width: 100%;">
+    <div class="title">Bugs Created (24H)</div>
+
+    <div *ngIf="initializing" class="loader-area">
+        <span class="loader"></span>
+    </div>
+
+    <div *ngIf="!initializing" [ngClass]="{'refresh': isRefreshing}" class="info">
+        <div class="info-value">{{lastValue}}</div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+.info-title {
+    color: var(--text-3);
+    font-size: 16px;
+    text-align: left;
+}
+
+.info-value {
+    font-size: 4em;
+    margin-left: 18px;
+    text-align: center;
+}
+
+.succeeded {
+    color: var(--green-1)
+}
+
+.failed {
+    color: var(--red-1)
+}

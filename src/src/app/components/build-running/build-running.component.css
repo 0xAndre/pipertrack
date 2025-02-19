@@ -1,0 +1,13 @@
+
+.info-title {
+    color: var(--text-3);
+    font-size: 14em;
+}
+
+.info-value {
+    font-size: 4em;
+    color: var(--text-1);
+    text-align: center;
+    margin-bottom: 18px;
+    color: var(--blue-1);
+}

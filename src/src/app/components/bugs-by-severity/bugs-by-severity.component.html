@@ -1,0 +1,22 @@
+<div style="width: 100%;">
+    <div class="title">Bugs by Severity</div>
+
+    <div *ngIf="initializing" class="loader-area">
+        <span class="loader"></span>
+    </div>
+
+    <div *ngIf="!initializing" class="info">
+        <ng-container *ngFor="let bug of lastValue">
+            <div style="margin-top: 14px">
+                <div class="info-title">
+                    <div [style.color]="bug.color">{{bug.severity}}</div>
+                    <div class="info-title-count">{{bug.count}} ({{bug.percentage}})</div>
+                </div>
+
+                <div class="bar"></div>
+                <div class="bar-fill" [style.width]="bug.percentage" [style.background-color]="bug.color"></div>
+            </div>
+
+        </ng-container>
+    </div>
+</div>

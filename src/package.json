@@ -1,0 +1,81 @@
+{
+  "name": "pipertrack",
+  "version": "0.0.0",
+  "main": "electron/main.js",
+  "description": "Pipertrack - Azure DevOps Dashboard",
+  "author": "https://github.com/0xAndre",
+  "build": {
+    "appId": "com.dashboard.pipertrack",
+    "productName": "pipertrack",
+    "directories": {
+      "buildResources": "build"
+    },
+    "mac": {
+      "icon": "out/pipertrack/browser/icon.icns",
+      "category": "public.app-category.utilities",
+      "target": "dmg"
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "artifactName": "pipertrack.setup.${version}.exe",
+      "deleteAppDataOnUninstall": true
+    },
+    "extraResources": [
+    {
+      "from": "config.json",
+      "to": "config.json"
+    }
+  ]
+  },
+  "scripts": {
+    "ng": "ng",
+    "client": "ng serve",
+    "start": "npm-run-all -p electron:serve ng:serve",
+    "build": "ng build --base-href ./",
+    "build:prod": "npm run build -- -c production",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "ng:serve": "ng serve",
+    "electron:serve": "wait-on tcp:4200 && npx electron . --serve",
+    "electron:build": "npm run build:prod && electron-builder build --publish=never"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^19.1.0",
+    "@angular/common": "^19.1.0",
+    "@angular/compiler": "^19.1.0",
+    "@angular/core": "^19.1.0",
+    "@angular/forms": "^19.1.0",
+    "@angular/platform-browser": "^19.1.0",
+    "@angular/platform-browser-dynamic": "^19.1.0",
+    "@angular/router": "^19.1.0",
+    "apexcharts": "^4.4.0",
+    "npm-run-all": "^4.1.5",
+    "ng-apexcharts": "^1.15.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "wait-on": "^8.0.2",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.1.4",
+    "@angular/cli": "^19.1.4",
+    "@angular/compiler-cli": "^19.1.0",
+    "@types/jasmine": "~5.1.0",
+    "electron": "^34.0.1",
+    "electron-debug": "^4.1.0",
+    "electron-reloader": "^1.2.3",
+    "jasmine-core": "~5.5.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.7.2"
+  }
+}

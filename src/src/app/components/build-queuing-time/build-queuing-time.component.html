@@ -1,0 +1,11 @@
+<div style="width: 100%;">
+    <div class="title">Builds Queuing Time</div>
+
+    <div *ngIf="initializing" class="loader-area">
+        <span class="loader"></span>
+    </div>
+
+    <div *ngIf="!initializing" [ngClass]="{'refresh': isRefreshing}" class="info">
+        <div class="info-value">{{ lastValue / 60 | number:'1.0-0' }} <span style="font-size: 0.6em;">min</span></div>
+    </div>
+</div>

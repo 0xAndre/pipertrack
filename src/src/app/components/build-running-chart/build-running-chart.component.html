@@ -1,0 +1,11 @@
+<div style="width: 100%;">
+  <div class="title">Builds Status by Day</div>
+
+  <div *ngIf="initializing" class="loader-area">
+    <span class="loader"></span>
+  </div>
+
+  <apx-chart *ngIf="!initializing" [series]="chartSeries" [chart]="chartDetails" [title]="chartTitle" [stroke]="chartStroke"
+    [xaxis]="chartXAxis" [yaxis]="chartYAxis" [dataLabels]="chartDataLabels">
+  </apx-chart>
+</div>

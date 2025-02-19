@@ -1,0 +1,29 @@
+.container {
+    column-count: 4;
+    column-gap: 8px;
+    width: 100%;
+    padding: 56px 4px 4px 4px;
+}
+
+.card {
+    background: var(--grey-1);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 8px 16px;
+    margin-bottom: 8px;
+    display: inline-flex;
+    width: 100%;
+    border-radius: 6px;
+}
+
+.title {
+    color: var(--text-2);
+    text-transform: uppercase;
+    font-size: 16px;
+    margin-bottom: 24px;
+    background-color: var(--grey-2);
+    margin: -10px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: -2px;
+    padding: 2px;
+}

@@ -1,0 +1,16 @@
+<div style="width: 100%;">
+    <div class="title">Build Status (24H)</div>
+
+    <div *ngIf="initializing" class="loader-area">
+        <span class="loader"></span>
+    </div>
+
+    <div *ngIf="!initializing" class="info">
+        <div class="info-title">Succeeded</div>
+        <div class="info-value succeeded">{{buildStats?.successCount}}</div>
+    </div>
+    <div *ngIf="!initializing" class="info">
+        <div class="info-title">Failed</div>
+        <div class="info-value failed">{{buildStats?.failedCount}}</div>
+    </div>
+</div>

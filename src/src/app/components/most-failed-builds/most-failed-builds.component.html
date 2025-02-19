@@ -1,0 +1,18 @@
+<div style="width: 100%;">
+    <div class="title">Most Failed Builds (24H)</div>
+
+    <div *ngIf="initializing" class="loader-area">
+        <span class="loader"></span>
+    </div>
+
+    <div *ngIf="!initializing" class="info">
+        <table>
+            <ng-container *ngFor="let build of lastValue">
+                <tr>
+                    <td>{{build.name}}</td>
+                    <td style="text-align: right;">{{build.count}}</td>
+                </tr>
+            </ng-container>
+        </table>
+    </div>
+</div>
