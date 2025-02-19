@@ -1,6 +1,6 @@
 {
     "azureDevOpsUrl": "https://dev.azure.com/your-organization",
-    "personalAccessToken": "you pat",
+    "personalAccessToken": "your pat",
     "teamProjects": [
         "Team Project A",
         "Team Project B"
