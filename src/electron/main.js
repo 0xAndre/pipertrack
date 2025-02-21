@@ -86,7 +86,7 @@ function createWindow() {
 
 // Validate config before initializing the application
 app.whenReady().then(() => {
-    validateConfig();
+    //validateConfig();
     createWindow();
     ipcHandlers();
 });

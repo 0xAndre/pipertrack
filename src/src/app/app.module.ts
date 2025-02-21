@@ -22,6 +22,7 @@ import { IpcService } from './../services/ipc.service';
 import { SlowestCompletedBuildsComponent } from './components/slowest-completed-builds/slowest-completed-builds.component';
 import { AveragePullrequestClosuretimeComponent } from './components/average-pullrequest-closuretime/average-pullrequest-closuretime.component';
 import { BugsBySeverityComponent } from './components/bugs-by-severity/bugs-by-severity.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { BugsBySeverityComponent } from './components/bugs-by-severity/bugs-by-s
     BuildQueuingTimeComponent,
     SlowestCompletedBuildsComponent,
     AveragePullrequestClosuretimeComponent,
-    BugsBySeverityComponent
+    BugsBySeverityComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

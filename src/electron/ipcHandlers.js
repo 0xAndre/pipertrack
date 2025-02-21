@@ -2,6 +2,10 @@ const { ipcMain, BrowserWindow } = require('electron');
 const azureService = require('./services/azureService');
 
 module.exports = () => {
+    ipcMain.handle('get-teamprojects', async () => {
+        return await azureService.getAllTeamProjects();
+    });
+
     ipcMain.handle('get-running-builds', async () => {
         return await azureService.getRunningBuilds();
     });

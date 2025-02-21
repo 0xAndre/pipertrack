@@ -6,6 +6,24 @@ const basePath = process.env.PORTABLE_EXECUTABLE_DIR || path.dirname(process.exe
 const configPath = path.join(basePath, 'config.json');
 const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
+
+const getAllTeamProjects = async () => {
+    const headers = {
+        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Content-Type': 'application/json'
+    };
+
+    const url = `${config.azureDevOpsUrl}/_apis/projects?api-version=6.0`;
+    
+    try {
+        const response = await axios.get(url, { headers });
+        return response.data.value.map(project => project.name);
+    } catch (error) {
+        console.error('Error while fetching team projects:', error);
+        return [];
+    }
+};
+
 const getRunningBuilds = async () => {
     const headers = {
         'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
@@ -395,6 +413,7 @@ const getBugCountBySeverity = async () => {
 
 
 module.exports = {
+    getAllTeamProjects,
     getRunningBuilds,
     getBuildStats,
     getActivePullRequests,
