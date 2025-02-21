@@ -19,7 +19,7 @@ steps:
   
   - task: SetJsonProperty@1
     inputs:
-      JsonFile: 'package.json'
+      JsonFile: 'src/package.json'
       PropertyPath: 'version'
       PropertyValue: '$(build.buildnumber)'
     displayName: "update buildnumber at package.json"
@@ -31,12 +31,14 @@ steps:
 
   - task: CmdLine@2
     inputs:
-      script: "npm install"
+      script: 'npm install'
+      workingDirectory: 'src'
     displayName: "npm install"
 
   - task: CmdLine@2
     inputs:
       script: "npm run electron:build"
+      workingDirectory: 'src'
     displayName: "build windows app"
 
   - task: CopyFiles@2
