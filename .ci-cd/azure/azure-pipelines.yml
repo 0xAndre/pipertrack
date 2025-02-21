@@ -43,12 +43,12 @@ steps:
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: "dist"
+      SourceFolder: 'src/dist'
       Contents: |
         *.exe
         *.exe.blockmap
         latest.yml
-      TargetFolder: "$(build.artifactstagingdirectory)"
+      TargetFolder: '$(build.artifactstagingdirectory)'
     displayName: "copy setup to artifact folder"
 
   - task: PublishBuildArtifacts@1
