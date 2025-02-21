@@ -20,7 +20,8 @@
     color: var(--text-2)
 }
 
-textarea:focus, input:focus{
+textarea:focus,
+input:focus {
     outline: none;
 }
 
@@ -33,4 +34,44 @@ input {
     color: var(--text-1);
     border: none;
     padding-left: 8px;
+}
+
+.custom-button {
+    background-color: var(--blue-1);
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    margin-top: 12px;
+}
+
+.custom-button:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid white;
+    border-top: 3px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

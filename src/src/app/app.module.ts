@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { NgApexchartsModule } from "ng-apexcharts";
 
@@ -46,7 +47,8 @@ import { SettingsComponent } from './settings/settings.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    ReactiveFormsModule
   ],
   providers: [IpcService],
   bootstrap: [AppComponent]

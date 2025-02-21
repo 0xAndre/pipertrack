@@ -1,17 +1,23 @@
 <div class="configuration">
     <div class="title">Configuration</div>
     <div class="input-area">
+        <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+            <div class="input-area-value">
+                <div class="label">Azure DevOps URL</div>
+                <input type="text" formControlName="azureUrl">
+            </div>
 
-        <div class="input-area-value">
-            <div class="label">Azure DevOps URL</div>
-            <input type="text">
-        </div>
+            <div class="input-area-value">
+                <div class="label">Azure DevOps PAT</div>
+                <input type="text" formControlName="azurePat">
+            </div>
 
-        <div class="input-area-value">
-            <div class="label">Azure DevOps PAT</div>
-            <input type="text">
-        </div>
-        
+            <button type="submit" [disabled]="configForm.invalid || isLoading" class="custom-button">
+                <span *ngIf="!isLoading">Verify</span>
+                <span *ngIf="isLoading" class="spinner"></span>
+            </button>
+        </form>
+
     </div>
-    
+
 </div>
