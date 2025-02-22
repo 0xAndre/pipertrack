@@ -9,8 +9,10 @@
 
             <div class="input-area-value">
                 <div class="label">Azure DevOps PAT</div>
-                <input type="text" formControlName="azurePat">
+                <input type="password" formControlName="azurePat">
             </div>
+
+            
 
             <button type="submit" [disabled]="configForm.invalid || isLoading" class="custom-button">
                 <span *ngIf="!isLoading">Verify</span>

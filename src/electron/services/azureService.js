@@ -2,18 +2,26 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
+const storageService = require('./storageService');
+
 const basePath = process.env.PORTABLE_EXECUTABLE_DIR || path.dirname(process.execPath);
 const configPath = path.join(basePath, 'config.json');
 const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
 
 const getAllTeamProjects = async () => {
+
+    config.azureDevOpsUrl = await storageService.getCredentials().azureUrl
+    config.personalAccessToken = await storageService.getCredentials().azurePat
+    
+    const cfg = await storageService.getCredentials();
+    
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + cfg.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
-    const url = `${config.azureDevOpsUrl}/_apis/projects?api-version=6.0`;
+    const url = `${cfg.azureUrl}/_apis/projects?api-version=6.0`;
     
     try {
         const response = await axios.get(url, { headers });

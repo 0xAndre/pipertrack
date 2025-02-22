@@ -50,6 +50,7 @@ input {
     justify-content: center;
     min-width: 100px;
     margin-top: 12px;
+    font-size: 13px;
 }
 
 .custom-button:disabled {

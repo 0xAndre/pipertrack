@@ -21,7 +21,7 @@ export class AppComponent {
   async getData() {
     const response = await this._ipc.sendMessage('get-teamprojects', "");
     if (response.length > 0) {
-      this.isConfigured = true;
+      //this.isConfigured = true;
     }
   }
 }

@@ -1,5 +1,6 @@
 const { ipcMain, BrowserWindow } = require('electron');
 const azureService = require('./services/azureService');
+const storageService = require('./services/storageService');
 
 module.exports = () => {
     ipcMain.handle('get-teamprojects', async () => {
@@ -63,5 +64,10 @@ module.exports = () => {
             let win = BrowserWindow.getAllWindows()[0];
             win.setFullScreen(!win.isFullScreen());
         }
+    });
+
+    ipcMain.handle('save-credentials', async (event, credentials) => {
+        await storageService.saveCredentials(credentials);
+        return await azureService.getAllTeamProjects(); 
     });
 };
