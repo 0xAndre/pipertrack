@@ -12,19 +12,26 @@ const storageService = {
         store.set('personalAccessToken', credentials.azurePat);
     },
 
+    saveTeamProjects: async (teamprojects) => {
+        await waitForStore();
+        store.set('teamProjects', JSON.parse(teamprojects));
+    },
+
     removeCredentials: async () => {
         await waitForStore();
         store.delete('azureDevOpsUrl');
         store.delete('personalAccessToken');
     },
 
-    getCredentials: async () => {
+    getStorageData: async () => {
         await waitForStore();
         return {
             azureUrl: store.get('azureDevOpsUrl'),
             azurePat: store.get('personalAccessToken'),
+            teamProjects: store.get('teamProjects')
         };
     }
+
 };
 
 async function waitForStore() {

@@ -51,6 +51,11 @@ input {
     min-width: 100px;
     margin-top: 12px;
     font-size: 13px;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    margin-bottom: 50px;
+    margin-right: 50px;
 }
 
 .custom-button:disabled {
@@ -75,4 +80,13 @@ input {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.selector {
+    color: var(--text-2);
+    font-size: 13px;
+    margin-top: 8px;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: var(--grey-2);
 }

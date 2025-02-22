@@ -1,6 +1,6 @@
 <pipertrack-topbar></pipertrack-topbar>
 
-<div *ngIf="isConfigured" class="container">
+<div *ngIf="!appGlobals.showSettings" class="container">
   <pipertrack-build-running-chart class="card"></pipertrack-build-running-chart>
   <pipertrack-build-status class="card"></pipertrack-build-status>
   <pipertrack-build-running class="card"></pipertrack-build-running>
@@ -16,6 +16,6 @@
   <pipertrack-bugs-by-severity class="card"></pipertrack-bugs-by-severity>
 </div>
 
-<div *ngIf="!isConfigured" class="config">
+<div *ngIf="appGlobals.showSettings" class="config">
   <pipertrack-settings></pipertrack-settings>
 </div>

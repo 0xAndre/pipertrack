@@ -1,9 +1,10 @@
-const { ipcMain, BrowserWindow } = require('electron');
+const { ipcMain, BrowserWindow, app } = require('electron');
 const azureService = require('./services/azureService');
 const storageService = require('./services/storageService');
 
 module.exports = () => {
     ipcMain.handle('get-teamprojects', async () => {
+        console.log(await storageService.getStorageData());
         return await azureService.getAllTeamProjects();
     });
 
@@ -68,6 +69,12 @@ module.exports = () => {
 
     ipcMain.handle('save-credentials', async (event, credentials) => {
         await storageService.saveCredentials(credentials);
-        return await azureService.getAllTeamProjects(); 
+        return await azureService.getAllTeamProjects();
+    });
+
+    ipcMain.handle('save-teamprojects', async (event, teamprojects) => {
+        await storageService.saveTeamProjects(teamprojects);
+        app.relaunch()
+        app.exit()
     });
 };

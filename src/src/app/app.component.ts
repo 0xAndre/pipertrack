@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+// globals
+import { AppGlobals } from './app.globals';
+
 // services
 import { IpcService } from '../services/ipc.service';
 
@@ -12,7 +15,7 @@ import { IpcService } from '../services/ipc.service';
 export class AppComponent {
   isConfigured: boolean = false;
 
-  constructor(private readonly _ipc: IpcService) { }
+  constructor(private readonly _ipc: IpcService, public appGlobals: AppGlobals) { }
 
   async ngOnInit() {
     this.getData();
@@ -20,8 +23,8 @@ export class AppComponent {
 
   async getData() {
     const response = await this._ipc.sendMessage('get-teamprojects', "");
-    if (response.length > 0) {
-      //this.isConfigured = true;
+    if (response.length == 0) {
+      this.appGlobals.showSettings = true;
     }
   }
 }

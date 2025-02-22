@@ -16,6 +16,9 @@ export class SettingsComponent {
 
   isLoading: boolean = false;
 
+  teamProjects: string[] = [];
+  selectedTeamprojects: string[] = [];
+
   constructor(private fb: FormBuilder, private readonly _ipc: IpcService) {
     this.configForm = this.fb.group({
       azureUrl: ['', Validators.required],
@@ -24,16 +27,20 @@ export class SettingsComponent {
   }
 
   async onSubmit() {
-    console.log('Form Values:', this.configForm.value);
     this.isLoading = true;
     const response = await this._ipc.sendMessage('save-credentials', this.configForm.value);
 
-    if(response.length == 0) {
+    if (response.length == 0) {
       console.log('error')
+    } else {
+      this.teamProjects = response;
     }
 
-    console.log(response)
-
     this.isLoading = false;
+  }
+
+  async saveTeamProjects() {
+    this.isLoading = true;
+    await this._ipc.sendMessage('save-teamprojects', JSON.stringify(this.selectedTeamprojects));
   }
 }

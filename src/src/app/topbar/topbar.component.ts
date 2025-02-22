@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+// globals
+import { AppGlobals } from '../app.globals';
+
 // services
 import { IpcService } from '../../services/ipc.service';
 
@@ -12,9 +15,13 @@ import { IpcService } from '../../services/ipc.service';
 })
 export class TopbarComponent {
 
-  constructor(private readonly _ipc: IpcService) { }
+  constructor(private readonly _ipc: IpcService, public appGlobals: AppGlobals) { }
 
   async maximize() {
     await this._ipc.sendMessage('toggle-fullscreen', "");
+  }
+
+  openSettings() {
+    this.appGlobals.showSettings = !this.appGlobals.showSettings;
   }
 }
