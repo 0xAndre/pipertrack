@@ -25,6 +25,8 @@ export class AppComponent {
     const response = await this._ipc.sendMessage('get-teamprojects', "");
     if (response.length == 0) {
       this.appGlobals.showSettings = true;
+    } else {
+      this.appGlobals.showSettings = false;
     }
   }
 }

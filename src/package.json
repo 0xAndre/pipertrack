@@ -1,5 +1,6 @@
 {
   "name": "pipertrack",
+  "productName": "pipertrack",
   "version": "0.0.0",
   "main": "electron/main.js",
   "description": "Pipertrack - Azure DevOps Dashboard",
@@ -11,7 +12,7 @@
       "buildResources": "build"
     },
     "mac": {
-      "icon": "out/pipertrack/browser/icon.icns",
+      "icon": "build/icon.icns",
       "category": "public.app-category.utilities",
       "target": "dmg"
     },

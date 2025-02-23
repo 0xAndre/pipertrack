@@ -4,11 +4,6 @@ const path = require('path');
 
 const storageService = require('./storageService');
 
-//const basePath = process.env.PORTABLE_EXECUTABLE_DIR || path.dirname(process.execPath);
-//const configPath = path.join(basePath, 'config.json');
-//const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-
-
 const getAllTeamProjects = async () => {
     const config = await storageService.getStorageData();
     

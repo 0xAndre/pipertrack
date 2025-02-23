@@ -4,7 +4,6 @@ const storageService = require('./services/storageService');
 
 module.exports = () => {
     ipcMain.handle('get-teamprojects', async () => {
-        console.log(await storageService.getStorageData());
         return await azureService.getAllTeamProjects();
     });
 
