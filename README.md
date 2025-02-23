@@ -33,7 +33,7 @@ Pipertrack is an intuitive application that provides a live dashboard for tracki
 - **And More...**  
   Explore additional features as we continue to improve the tool!
 
-![](docs/app.png)
+![](docs/appv2.png)
 
 ## How to Use
 
