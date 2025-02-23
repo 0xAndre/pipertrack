@@ -26,6 +26,10 @@
       "artifactName": "pipertrack.setup.${version}.exe",
       "deleteAppDataOnUninstall": true
     },
+    "publish": {
+      "provider": "generic",
+      "url": "./"
+    },
     "extraResources": [
       {
         "from": "config.json",
@@ -73,6 +77,7 @@
     "@angular/compiler-cli": "^19.1.0",
     "@types/jasmine": "~5.1.0",
     "electron": "^34.0.1",
+    "electron-builder": "^25.1.8",
     "electron-debug": "^4.1.0",
     "electron-reloader": "^1.2.3",
     "jasmine-core": "~5.5.0",
