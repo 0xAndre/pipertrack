@@ -23,5 +23,6 @@ export class TopbarComponent {
 
   openSettings() {
     this.appGlobals.showSettings = !this.appGlobals.showSettings;
+    this.appGlobals.setAllComponentsTrue();
   }
 }

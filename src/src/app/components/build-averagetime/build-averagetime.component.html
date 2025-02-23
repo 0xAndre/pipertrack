@@ -1,5 +1,8 @@
 <div style="width: 100%;">
-    <div class="title">Builds Average Time</div>
+    <div class="title" style="display: flex;">
+        <span style="width: 95%;">Builds Average Time</span>
+        <img class="close" src="close.svg" (click)="appGlobals.showBuildAverageTimeComponents = false;">
+    </div>
 
     <div *ngIf="initializing" class="loader-area">
         <span class="loader"></span>

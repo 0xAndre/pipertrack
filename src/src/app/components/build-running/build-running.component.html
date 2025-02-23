@@ -1,5 +1,8 @@
 <div style="width: 100%;">
-    <div class="title">Builds Running</div>
+    <div class="title" style="display: flex;">
+        <span style="width: 95%;">Builds Running</span>
+        <img class="close" src="close.svg" (click)="appGlobals.showBuildRunningComponents = false;">
+    </div>
 
     <div *ngIf="initializing" class="loader-area">
         <span class="loader"></span>

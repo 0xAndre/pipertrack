@@ -35,3 +35,16 @@ tr {
     width: 95%;
     height: 30px;
 }
+
+.close {
+    width: 20px;
+    cursor: pointer;
+    height: 20px;
+    border-radius: 5px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.close:hover {
+    background-color: var(--grey-1);
+}

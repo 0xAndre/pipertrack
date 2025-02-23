@@ -98,9 +98,9 @@ body {
     background-color: var(--grey-2);
     margin: -10px;
     border-radius: 3px;
-    text-align: center;
     margin-top: -2px;
     padding: 2px;
+    padding-left: 8px;
 }
 
 
