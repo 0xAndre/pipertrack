@@ -2,20 +2,39 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-const basePath = process.env.PORTABLE_EXECUTABLE_DIR || path.dirname(process.execPath);
-const configPath = path.join(basePath, 'config.json');
-const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+const storageService = require('./storageService');
+
+const getAllTeamProjects = async () => {
+    const config = await storageService.getStorageData();
+    
+    const headers = {
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
+        'Content-Type': 'application/json'
+    };
+
+    const url = `${config.azureUrl}/_apis/projects?api-version=6.0`;
+    
+    try {
+        const response = await axios.get(url, { headers });
+        return response.data.value.map(project => project.name);
+    } catch (error) {
+        console.error('Error while fetching team projects:', error);
+        return [];
+    }
+};
 
 const getRunningBuilds = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
     let totalRunningBuilds = 0;
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/build/builds?statusFilter=inProgress&api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/build/builds?statusFilter=inProgress&api-version=6.0`;
         try {
             const response = await axios.get(url, { headers });
             totalRunningBuilds += response.data.count;
@@ -28,8 +47,10 @@ const getRunningBuilds = async () => {
 };
 
 const getBuildStats = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -39,7 +60,7 @@ const getBuildStats = async () => {
     yesterday.setDate(yesterday.getDate() - 1);
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/build/builds?minTime=${yesterday.toISOString()}&resultFilter=Succeeded,Failed&api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/build/builds?minTime=${yesterday.toISOString()}&resultFilter=Succeeded,Failed&api-version=6.0`;
         try {
             const response = await axios.get(url, { headers });
             response.data.value.forEach(build => {
@@ -55,15 +76,17 @@ const getBuildStats = async () => {
 };
 
 const getActivePullRequests = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
     let totalActivePRs = 0;
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/git/pullrequests?searchCriteria.status=active&api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/git/pullrequests?searchCriteria.status=active&api-version=6.0`;
         try {
             const response = await axios.get(url, { headers });
             totalActivePRs += response.data.count;
@@ -76,9 +99,10 @@ const getActivePullRequests = async () => {
 };
 
 const getRecentBugs = async () => {
+    const config = await storageService.getStorageData();
 
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -88,9 +112,12 @@ const getRecentBugs = async () => {
     const formattedDate = yesterday.toISOString().split('T')[0];
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/wit/wiql?api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/wit/wiql?api-version=6.0`;
         const query = {
-            query: `SELECT [System.Id] FROM WorkItems WHERE [System.WorkItemType] = 'Bug' AND [System.CreatedDate] >= '${formattedDate}'`
+            query: `SELECT [System.Id] FROM WorkItems WHERE 
+                    [System.WorkItemType] = 'Bug' 
+                    AND [System.CreatedDate] >= '${formattedDate}'
+                    AND [System.TeamProject] = '${project}'`
         };
         try {
             const response = await axios.post(url, query, { headers });
@@ -104,8 +131,10 @@ const getRecentBugs = async () => {
 };
 
 const getBuildDurationAvg = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -113,7 +142,7 @@ const getBuildDurationAvg = async () => {
     let successCount = 0;
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/build/builds?resultFilter=succeeded&api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/build/builds?resultFilter=succeeded&api-version=6.0`;
         try {
             const response = await axios.get(url, { headers });
             response.data.value.forEach(build => {
@@ -131,8 +160,10 @@ const getBuildDurationAvg = async () => {
 };
 
 const getBuildQueueTimeAvg = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -140,7 +171,7 @@ const getBuildQueueTimeAvg = async () => {
     let successCount = 0;
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/build/builds?resultFilter=succeeded&api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/build/builds?resultFilter=succeeded&api-version=6.0`;
         try {
             const response = await axios.get(url, { headers });
             response.data.value.forEach(build => {
@@ -158,8 +189,10 @@ const getBuildQueueTimeAvg = async () => {
 };
 
 const getTopCommitUsers = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -168,7 +201,7 @@ const getTopCommitUsers = async () => {
 
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/git/repositories?api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/git/repositories?api-version=6.0`;
         try {
             const reposResponse = await axios.get(url, { headers });
             for (const repo of reposResponse.data.value) {
@@ -191,8 +224,10 @@ const getTopCommitUsers = async () => {
 };
 
 const getTopFailedBuilds = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -200,7 +235,7 @@ const getTopFailedBuilds = async () => {
     const sinceDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/build/builds?minTime=${sinceDate}&resultFilter=failed&api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/build/builds?minTime=${sinceDate}&resultFilter=failed&api-version=6.0`;
         try {
             const buildsResponse = await axios.get(url, { headers });
             buildsResponse.data.value.forEach(build => {
@@ -219,8 +254,10 @@ const getTopFailedBuilds = async () => {
 };
 
 const getBuildStatsLast7Days = async () => {
+    const config = await storageService.getStorageData();
+    
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -234,7 +271,7 @@ const getBuildStatsLast7Days = async () => {
     }
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/build/builds?minTime=${new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()}&api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/build/builds?minTime=${new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()}&api-version=6.0`;
         try {
             const buildsResponse = await axios.get(url, { headers });
             buildsResponse.data.value.forEach(build => {
@@ -255,35 +292,42 @@ const getBuildStatsLast7Days = async () => {
 };
 
 const getFailedReleasesCount = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
-    let failedReleasesCount = 0;
+    let failedStagesCount = 0;
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/release/releases?api-version=6.0`;
+        const organization = getOrganizationFromUrl(config.azureUrl);
+        const url = `https://vsrm.dev.azure.com/${organization}/${project}/_apis/release/releases?api-version=6.0&$expand=environments`;
         try {
             const releasesResponse = await axios.get(url, { headers });
             releasesResponse.data.value.forEach(release => {
-                const environments = release.environments
-                const isFailed = environments.some(environment => environment.status === 'failed');
-                if (isFailed) {
-                    failedReleasesCount++;
-                }
+                release.environments.forEach(environment => {
+                    if (["rejected", "canceled", "failed"].includes(environment.status.toLowerCase())) {
+                        failedStagesCount++;
+                    }
+                });
             });
+
         } catch (error) {
             //console.error(`Error while fetching releases for ${project}:`, error);
         }
     }
 
-    return failedReleasesCount;
+    return failedStagesCount;
 };
 
+
 const getSlowestCompletedBuilds = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -291,7 +335,7 @@ const getSlowestCompletedBuilds = async () => {
     const sinceDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/build/builds?minTime=${sinceDate}&resultFilter=succeeded&api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/build/builds?minTime=${sinceDate}&resultFilter=succeeded&api-version=6.0`;
         try {
             const response = await axios.get(url, { headers });
             response.data.value.forEach(build => {
@@ -309,8 +353,10 @@ const getSlowestCompletedBuilds = async () => {
 };
 
 const getAveragePullRequestClosureTime = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -319,7 +365,7 @@ const getAveragePullRequestClosureTime = async () => {
     const sinceDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureDevOpsUrl}/${project}/_apis/git/pullrequests?searchCriteria.status=completed&api-version=6.0`;
+        const url = `${config.azureUrl}/${project}/_apis/git/pullrequests?searchCriteria.status=completed&api-version=6.0`;
         try {
             const response = await axios.get(url, { headers });
             response.data.value.forEach(pr => {
@@ -337,8 +383,10 @@ const getAveragePullRequestClosureTime = async () => {
 };
 
 const getBugCountBySeverity = async () => {
+    const config = await storageService.getStorageData();
+
     const headers = {
-        'Authorization': `Basic ${Buffer.from(':' + config.personalAccessToken).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
         'Content-Type': 'application/json'
     };
 
@@ -358,7 +406,7 @@ const getBugCountBySeverity = async () => {
             const bugIds = [];
             
             do {
-                const bugsUrl = `${config.azureDevOpsUrl}/${project}/_apis/wit/wiql?api-version=6.0`;
+                const bugsUrl = `${config.azureUrl}/${project}/_apis/wit/wiql?api-version=6.0`;
                 const wiqlQuery = {
                     query: `SELECT [System.Id] FROM WorkItems WHERE [System.WorkItemType] = 'Bug' AND [System.TeamProject] = '${project}' ORDER BY [System.Id] ASC`
                 };
@@ -372,7 +420,7 @@ const getBugCountBySeverity = async () => {
 
             for (let i = 0; i < bugIds.length; i += batchSize) {
                 const batchIds = bugIds.slice(i, i + batchSize);
-                const workItemDetailsUrl = `${config.azureDevOpsUrl}/${project}/_apis/wit/workitems?ids=${batchIds.join(',')}&fields=Microsoft.VSTS.Common.Severity&api-version=6.0`;
+                const workItemDetailsUrl = `${config.azureUrl}/${project}/_apis/wit/workitems?ids=${batchIds.join(',')}&fields=Microsoft.VSTS.Common.Severity&api-version=6.0`;
                 const workItemDetailsResponse = await axios.get(workItemDetailsUrl, { headers });
                 const workItemsDetails = workItemDetailsResponse.data.value || [];
                 
@@ -392,9 +440,14 @@ const getBugCountBySeverity = async () => {
     });
 };
 
-
+function getOrganizationFromUrl(url) {
+    const regex = /https:\/\/dev\.azure\.com\/([^\/]+)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
 
 module.exports = {
+    getAllTeamProjects,
     getRunningBuilds,
     getBuildStats,
     getActivePullRequests,

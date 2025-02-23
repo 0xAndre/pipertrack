@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog } = require('electron');
+const { app, BrowserWindow, nativeImage } = require('electron');
 const path = require("path");
 const fs = require("fs");
 const url = require("url");
@@ -8,35 +8,6 @@ var args = process.argv.slice(1),
     serve = args.some(function (val) { return val === '--serve'; });
 
 let win;
-
-// Function to validate the existence and integrity of config.json
-function validateConfig() {
-    const basePath = process.env.PORTABLE_EXECUTABLE_DIR || path.dirname(process.execPath);
-    const configPath = path.join(basePath, 'config.json');
-
-    if (!fs.existsSync(configPath)) {
-        dialog.showErrorBox('Error', 'The config.json file was not found.');
-        app.quit(); // Exit the application
-        return;
-    }
-
-    try {
-        const rawData = fs.readFileSync(configPath, 'utf-8');
-        const config = JSON.parse(rawData);
-
-        const requiredFields = ['azureDevOpsUrl', 'personalAccessToken', 'teamProjects'];
-        for (const field of requiredFields) {
-            if (!config[field] || (Array.isArray(config[field]) && config[field].length === 0)) {
-                dialog.showErrorBox('Error', `The field "${field}" is missing or empty in config.json.`);
-                app.quit();
-                return;
-            }
-        }
-    } catch (error) {
-        dialog.showErrorBox('Error', 'The config.json file is invalid or corrupted.');
-        app.quit();
-    }
-}
 
 function createWindow() {
     const iconPath = process.platform === 'darwin'
@@ -86,7 +57,6 @@ function createWindow() {
 
 // Validate config before initializing the application
 app.whenReady().then(() => {
-    validateConfig();
     createWindow();
     ipcHandlers();
 });

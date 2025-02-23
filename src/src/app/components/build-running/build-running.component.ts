@@ -1,5 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
+// globals
+import { AppGlobals } from '../../app.globals';
+
 // services
 import { IpcService } from '../../../services/ipc.service';
 
@@ -18,7 +21,7 @@ export class BuildRunningComponent implements OnInit, OnDestroy {
   lastValue: number = 0;
   initializing: boolean = true;
 
-  constructor(private readonly _ipc: IpcService) { }
+  constructor(private readonly _ipc: IpcService, public appGlobals: AppGlobals) { }
 
   async ngOnInit() {
     this.getData();

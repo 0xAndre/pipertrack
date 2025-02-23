@@ -1,19 +1,21 @@
 <pipertrack-topbar></pipertrack-topbar>
 
-<div class="container">
-  <pipertrack-build-running-chart class="card"></pipertrack-build-running-chart>
-  <pipertrack-build-status class="card"></pipertrack-build-status>
-  <pipertrack-build-running class="card"></pipertrack-build-running>
-  <pipertrack-active-pullrequests class="card"></pipertrack-active-pullrequests>
-  <pipertrack-build-averagetime class="card"></pipertrack-build-averagetime>
-  <pipertrack-bugs-created class="card"></pipertrack-bugs-created>
-  <pipertrack-most-commit-developer class="card"></pipertrack-most-commit-developer>
-  <pipertrack-failed-releases class="card"></pipertrack-failed-releases>
-  <pipertrack-most-failed-builds class="card"></pipertrack-most-failed-builds>
-  <pipertrack-build-queuing-time class="card"></pipertrack-build-queuing-time>
-  <pipertrack-slowest-completed-builds class="card"></pipertrack-slowest-completed-builds>
-  <pipetrack-average-pullrequest-closuretime class="card"></pipetrack-average-pullrequest-closuretime>
-  <pipertrack-bugs-by-severity class="card"></pipertrack-bugs-by-severity>
+<div *ngIf="!appGlobals.showSettings" class="container">
+  <pipertrack-build-running-chart *ngIf="appGlobals.showBuildRunningChartComponents" class="card"></pipertrack-build-running-chart>
+  <pipertrack-build-status *ngIf="appGlobals.showBuildStatusComponents" class="card"></pipertrack-build-status>
+  <pipertrack-build-running *ngIf="appGlobals.showBuildRunningComponents" class="card"></pipertrack-build-running>
+  <pipertrack-active-pullrequests *ngIf="appGlobals.showActivePullRequestsComponents" class="card"></pipertrack-active-pullrequests>
+  <pipertrack-build-averagetime *ngIf="appGlobals.showBuildAverageTimeComponents" class="card"></pipertrack-build-averagetime>
+  <pipertrack-bugs-created *ngIf="appGlobals.showBugsCreatedComponents" class="card"></pipertrack-bugs-created>
+  <pipertrack-most-commit-developer *ngIf="appGlobals.showMostCommitDeveloperComponents" class="card"></pipertrack-most-commit-developer>
+  <pipertrack-failed-releases *ngIf="appGlobals.showFailedReleasesComponents" class="card"></pipertrack-failed-releases>
+  <pipertrack-most-failed-builds *ngIf="appGlobals.showMostFailedBuildsComponents" class="card"></pipertrack-most-failed-builds>
+  <pipertrack-build-queuing-time *ngIf="appGlobals.showBuildQueuingTimeComponents" class="card"></pipertrack-build-queuing-time>
+  <pipertrack-slowest-completed-builds *ngIf="appGlobals.showSlowestCompletedBuildsComponents" class="card"></pipertrack-slowest-completed-builds>
+  <pipetrack-average-pullrequest-closuretime *ngIf="appGlobals.showPullRequestClosureTimeComponents" class="card"></pipetrack-average-pullrequest-closuretime>
+  <pipertrack-bugs-by-severity *ngIf="appGlobals.showBugsBySeverityComponents" class="card"></pipertrack-bugs-by-severity>
 </div>
 
-<router-outlet />
+<div *ngIf="appGlobals.showSettings" class="config">
+  <pipertrack-settings></pipertrack-settings>
+</div>

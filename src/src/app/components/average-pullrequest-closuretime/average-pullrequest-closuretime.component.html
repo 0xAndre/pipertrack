@@ -1,5 +1,8 @@
 <div style="width: 100%;">
-    <div class="title">Average PR Closure Time</div>
+    <div class="title" style="display: flex;">
+        <span style="width: 95%;">Average PR Closure Time</span>
+        <img class="close" src="close.svg" (click)="appGlobals.showPullRequestClosureTimeComponents = false;">
+    </div>
 
     <div *ngIf="initializing" class="loader-area">
         <span class="loader"></span>

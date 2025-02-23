@@ -1,0 +1,33 @@
+<div class="configuration">
+    <div class="title" style="text-align: center;">Configuration</div>
+    <div class="input-area">
+        <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+            <div class="input-area-value">
+                <div class="label">Azure DevOps URL</div>
+                <input type="text" formControlName="azureUrl">
+            </div>
+
+            <div class="input-area-value">
+                <div class="label">Azure DevOps PAT</div>
+                <input type="password" formControlName="azurePat">
+            </div>
+
+            <button *ngIf="teamProjects.length == 0" type="submit" [disabled]="configForm.invalid || isLoading"
+                class="custom-button">
+                <span *ngIf="!isLoading">Verify</span>
+                <span *ngIf="isLoading" class="spinner"></span>
+            </button>
+        </form>
+
+        <p-multiselect *ngIf="teamProjects.length > 0" class="selector" [options]="teamProjects"
+            [(ngModel)]="selectedTeamprojects" placeholder="Select Team Projects" [maxSelectedLabels]="20"
+            styleClass="w-full md:w-80" />
+
+        <button *ngIf="selectedTeamprojects.length > 0" type="submit" [disabled]="isLoading"
+            class="custom-button">
+            <span *ngIf="!isLoading" (click)="saveTeamProjects()">Save</span>
+            <span *ngIf="isLoading" class="spinner"></span>
+        </button>
+    </div>
+
+</div>

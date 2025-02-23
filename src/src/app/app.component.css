@@ -5,6 +5,10 @@
     padding: 56px 4px 4px 4px;
 }
 
+.config {
+    padding-top: 42px;
+}
+
 .card {
     background: var(--grey-1);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;

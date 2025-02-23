@@ -1,5 +1,8 @@
 <div style="width: 100%;">
-    <div class="title">Active Pull Requests</div>
+    <div class="title" style="display: flex;">
+        <span style="width: 95%;">Active Pull Requests</span>
+        <img class="close" src="close.svg" (click)="appGlobals.showActivePullRequestsComponents = false;">
+    </div>
 
     <div *ngIf="initializing" class="loader-area">
         <span class="loader"></span>

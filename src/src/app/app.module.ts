@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgApexchartsModule } from "ng-apexcharts";
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +25,10 @@ import { IpcService } from './../services/ipc.service';
 import { SlowestCompletedBuildsComponent } from './components/slowest-completed-builds/slowest-completed-builds.component';
 import { AveragePullrequestClosuretimeComponent } from './components/average-pullrequest-closuretime/average-pullrequest-closuretime.component';
 import { BugsBySeverityComponent } from './components/bugs-by-severity/bugs-by-severity.component';
+import { SettingsComponent } from './settings/settings.component';
+
+// global
+import { AppGlobals } from './app.globals';
 
 @NgModule({
   declarations: [
@@ -39,14 +46,19 @@ import { BugsBySeverityComponent } from './components/bugs-by-severity/bugs-by-s
     BuildQueuingTimeComponent,
     SlowestCompletedBuildsComponent,
     AveragePullrequestClosuretimeComponent,
-    BugsBySeverityComponent
+    BugsBySeverityComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    ReactiveFormsModule,
+    MultiSelectModule,
+    FormsModule,
+    BrowserAnimationsModule
   ],
-  providers: [IpcService],
+  providers: [IpcService, AppGlobals],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,11 +1,14 @@
 <div style="width: 100%;">
-  <div class="title">Builds Status by Day</div>
+  <div class="title" style="display: flex;">
+    <span style="width: 95%;">Builds Status by Day</span>
+    <img class="close" src="close.svg" (click)="appGlobals.showBuildRunningChartComponents = false;">
+  </div>
 
   <div *ngIf="initializing" class="loader-area">
     <span class="loader"></span>
   </div>
 
-  <apx-chart *ngIf="!initializing" [series]="chartSeries" [chart]="chartDetails" [title]="chartTitle" [stroke]="chartStroke"
-    [xaxis]="chartXAxis" [yaxis]="chartYAxis" [dataLabels]="chartDataLabels">
+  <apx-chart *ngIf="!initializing" [series]="chartSeries" [chart]="chartDetails" [title]="chartTitle"
+    [stroke]="chartStroke" [xaxis]="chartXAxis" [yaxis]="chartYAxis" [dataLabels]="chartDataLabels">
   </apx-chart>
 </div>

@@ -1,7 +1,12 @@
-const { ipcMain, BrowserWindow } = require('electron');
+const { ipcMain, BrowserWindow, app } = require('electron');
 const azureService = require('./services/azureService');
+const storageService = require('./services/storageService');
 
 module.exports = () => {
+    ipcMain.handle('get-teamprojects', async () => {
+        return await azureService.getAllTeamProjects();
+    });
+
     ipcMain.handle('get-running-builds', async () => {
         return await azureService.getRunningBuilds();
     });
@@ -59,5 +64,20 @@ module.exports = () => {
             let win = BrowserWindow.getAllWindows()[0];
             win.setFullScreen(!win.isFullScreen());
         }
+    });
+
+    ipcMain.handle('save-credentials', async (event, credentials) => {
+        await storageService.saveCredentials(credentials);
+        return await azureService.getAllTeamProjects();
+    });
+
+    ipcMain.handle('save-teamprojects', async (event, teamprojects) => {
+        await storageService.saveTeamProjects(teamprojects);
+        app.relaunch()
+        app.exit()
+    });
+
+    ipcMain.handle('get-storage-data', async () => {
+        return await storageService.getStorageData();
     });
 };
