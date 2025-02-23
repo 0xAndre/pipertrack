@@ -299,26 +299,29 @@ const getFailedReleasesCount = async () => {
         'Content-Type': 'application/json'
     };
 
-    let failedReleasesCount = 0;
+    let failedStagesCount = 0;
 
     for (const project of config.teamProjects) {
-        const url = `${config.azureUrl}/${project}/_apis/release/releases?api-version=6.0`;
+        const organization = getOrganizationFromUrl(config.azureUrl);
+        const url = `https://vsrm.dev.azure.com/${organization}/${project}/_apis/release/releases?api-version=6.0&$expand=environments`;
         try {
             const releasesResponse = await axios.get(url, { headers });
             releasesResponse.data.value.forEach(release => {
-                const environments = release.environments
-                const isFailed = environments.some(environment => environment.status === 'failed');
-                if (isFailed) {
-                    failedReleasesCount++;
-                }
+                release.environments.forEach(environment => {
+                    if (["rejected", "canceled", "failed"].includes(environment.status.toLowerCase())) {
+                        failedStagesCount++;
+                    }
+                });
             });
+
         } catch (error) {
             //console.error(`Error while fetching releases for ${project}:`, error);
         }
     }
 
-    return failedReleasesCount;
+    return failedStagesCount;
 };
+
 
 const getSlowestCompletedBuilds = async () => {
     const config = await storageService.getStorageData();
@@ -437,7 +440,11 @@ const getBugCountBySeverity = async () => {
     });
 };
 
-
+function getOrganizationFromUrl(url) {
+    const regex = /https:\/\/dev\.azure\.com\/([^\/]+)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
 
 module.exports = {
     getAllTeamProjects,
