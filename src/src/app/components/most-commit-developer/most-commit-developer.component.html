@@ -1,5 +1,8 @@
 <div style="width: 100%;">
-    <div class="title">Most Developer Commits (24H)</div>
+    <div class="title" style="display: flex;">
+        <span style="width: 95%;">Most Developer Commits (24H)</span>
+        <img class="close" src="close.svg" (click)="appGlobals.showMostCommitDeveloperComponents = false;">
+    </div>
     
     <div *ngIf="initializing" class="loader-area">
         <span class="loader"></span>
