@@ -114,7 +114,10 @@ const getRecentBugs = async () => {
     for (const project of config.teamProjects) {
         const url = `${config.azureUrl}/${project}/_apis/wit/wiql?api-version=6.0`;
         const query = {
-            query: `SELECT [System.Id] FROM WorkItems WHERE [System.WorkItemType] = 'Bug' AND [System.CreatedDate] >= '${formattedDate}'`
+            query: `SELECT [System.Id] FROM WorkItems WHERE 
+                    [System.WorkItemType] = 'Bug' 
+                    AND [System.CreatedDate] >= '${formattedDate}'
+                    AND [System.TeamProject] = '${project}'`
         };
         try {
             const response = await axios.post(url, query, { headers });
