@@ -26,6 +26,16 @@ export class SettingsComponent {
     });
   }
 
+  async ngOnInit() {
+    let response = await this._ipc.sendMessage('get-storage-data', "");
+    if (response && response.azureUrl && response.azurePat) {
+      this.configForm.patchValue({
+        azureUrl: response.azureUrl,
+        azurePat: response.azurePat
+      });
+    }
+  }
+
   async onSubmit() {
     this.isLoading = true;
     const response = await this._ipc.sendMessage('save-credentials', this.configForm.value);

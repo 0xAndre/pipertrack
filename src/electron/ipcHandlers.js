@@ -77,4 +77,8 @@ module.exports = () => {
         app.relaunch()
         app.exit()
     });
+
+    ipcMain.handle('get-storage-data', async () => {
+        return await storageService.getStorageData();
+    });
 };
