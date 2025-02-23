@@ -13,6 +13,7 @@
             <ng-container *ngFor="let build of lastValue">
                 <tr>
                     <td>{{build.name}}</td>
+                    <td>{{build.version}}</td>
                     <td style="text-align: right;">{{ build.duration / 60 | number:'1.0-0' }} min</td>
                 </tr>
             </ng-container>

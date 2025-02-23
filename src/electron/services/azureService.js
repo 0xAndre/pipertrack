@@ -342,7 +342,7 @@ const getSlowestCompletedBuilds = async () => {
                 const startTime = new Date(build.startTime);
                 const finishTime = new Date(build.finishTime);
                 const duration = (finishTime - startTime) / 1000;
-                builds.push({ name: build.definition.name, duration });
+                builds.push({ name: build.definition.name, duration, version: build.buildNumber });
             });
         } catch (error) {
             console.error(`Error getting builds from: ${project}:`, error);
