@@ -130,6 +130,40 @@ const getRecentBugs = async () => {
     return totalBugs;
 };
 
+const getDoneBugsLast24Hours = async () => {
+    const config = await storageService.getStorageData();
+
+    const headers = {
+        'Authorization': `Basic ${Buffer.from(':' + config.azurePat).toString('base64')}`,
+        'Content-Type': 'application/json'
+    };
+
+    let totalBugs = 0;
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const formattedDate = yesterday.toISOString();
+
+    for (const project of config.teamProjects) {
+        const url = `${config.azureUrl}/${project}/_apis/wit/wiql?api-version=6.0`;
+        const query = {
+            query: `SELECT [System.Id] FROM WorkItems WHERE 
+                    [System.WorkItemType] = 'Bug' 
+                    AND [System.State] = 'Done' 
+                    AND [Microsoft.VSTS.Common.StateChangeDate] >= '${formattedDate}'
+                    AND [System.TeamProject] = '${project}'`
+        };
+        try {
+            const response = await axios.post(url, query, { headers });
+            totalBugs += response.data.workItems.length;
+        } catch (error) {
+            console.error(`Error while fetching done bugs for ${project}:`, error);
+        }
+    }
+
+    return totalBugs;
+};
+
+
 const getBuildDurationAvg = async () => {
     const config = await storageService.getStorageData();
 
@@ -452,6 +486,7 @@ module.exports = {
     getBuildStats,
     getActivePullRequests,
     getRecentBugs,
+    getDoneBugsLast24Hours,
     getBuildDurationAvg,
     getBuildQueueTimeAvg,
     getTopCommitUsers,

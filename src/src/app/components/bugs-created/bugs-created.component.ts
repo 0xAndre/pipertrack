@@ -6,6 +6,9 @@ import { AppGlobals } from '../../app.globals';
 // services
 import { IpcService } from '../../../services/ipc.service';
 
+import { ChartComponent, ApexChart, ApexDataLabels, ApexLegend, ApexNonAxisChartSeries, ApexFill, ApexStroke } from 'ng-apexcharts';
+
+
 @Component({
   selector: 'pipertrack-bugs-created',
   standalone: false,
@@ -14,35 +17,48 @@ import { IpcService } from '../../../services/ipc.service';
   styleUrl: './bugs-created.component.css'
 })
 export class BugsCreatedComponent {
+  series: ApexNonAxisChartSeries = [60, 40];
+  chart: ApexChart = {
+    type: 'donut',
+  };
+  labels = ['Created', 'Done'];
+  legend: ApexLegend = {
+    labels: {
+      colors: '#ffffff',
+    },
+  };
+  dataLabels: ApexDataLabels = {
+    style: {
+      colors: ['#ffffff'],
+    },
+    formatter: (val, opts) => {
+      return opts.w.config.series[opts.seriesIndex];
+    }
+  };
+  fill: ApexFill = {
+    colors: ['#3366FF', '#339900'],
+  };
+  stroke: ApexStroke = {
+    width: 2,
+    colors: ['#404040'],
+  };
+
   private intervalId: any;
-  private readonly intervalTime: number = 5000;
+  private readonly intervalTime: number = 60000;
 
-  isRefreshing: boolean = false;
-  lastValue: number = 0;
-  initializing: boolean = true;
+  constructor(private readonly _ipc: IpcService, public appGlobals: AppGlobals) {
 
-  constructor(private readonly _ipc: IpcService, public appGlobals: AppGlobals) { }
+  }
 
   async ngOnInit() {
     this.getData();
     this.startAutoUpdate();
   }
 
-  ngOnDestroy() {
-    this.stopAutoUpdate();
-  }
-
   async getData() {
-    const response = await this._ipc.sendMessage('get-recent-bugs', "");
-    if (this.lastValue != response) {
-      this.lastValue = response;
-      this.isRefreshing = true;
-
-      setTimeout(() => {
-        this.isRefreshing = false;
-      }, 1000);
-    }
-    this.initializing = false;
+    const bugsCreated = await this._ipc.sendMessage('get-recent-bugs', "");
+    const bugsDone = await this._ipc.sendMessage('get-bugs-done', "");
+    this.series = [bugsCreated, bugsDone];
   }
 
   startAutoUpdate() {
@@ -56,4 +72,5 @@ export class BugsCreatedComponent {
       clearInterval(this.intervalId);
     }
   }
+
 }
