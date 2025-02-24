@@ -1,4 +1,4 @@
-const { app, BrowserWindow, nativeImage } = require('electron');
+const { app, BrowserWindow, nativeImage, dialog } = require('electron');
 const path = require("path");
 const fs = require("fs");
 const url = require("url");
