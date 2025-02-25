@@ -12,8 +12,8 @@ Pipertrack is an intuitive application that provides a live dashboard for tracki
 - **Successful and Failed Builds (Last 7 Days)**  
   A graph that displays the count of successful and failed builds over the past 7 days.
 
-- **Bugs Created (Last 24 Hours)**  
-  A snapshot of bugs created within the last 24 hours.
+- **Bugs Created vs Done(Last 24 Hours)**  
+  A snapshot of bugs created vs Done within the last 24 hours.
 
 - **Longest Running Builds**  
   Track the builds that took the longest time to complete.
