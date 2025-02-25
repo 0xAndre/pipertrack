@@ -45,6 +45,7 @@ export class BugsCreatedComponent {
 
   private intervalId: any;
   private readonly intervalTime: number = 60000;
+  initializing: boolean = true;
 
   constructor(private readonly _ipc: IpcService, public appGlobals: AppGlobals) {
 
@@ -59,6 +60,7 @@ export class BugsCreatedComponent {
     const bugsCreated = await this._ipc.sendMessage('get-recent-bugs', "");
     const bugsDone = await this._ipc.sendMessage('get-bugs-done', "");
     this.series = [bugsCreated, bugsDone];
+    this.initializing = false;
   }
 
   startAutoUpdate() {
