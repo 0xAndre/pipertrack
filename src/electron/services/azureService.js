@@ -141,7 +141,8 @@ const getDoneBugsLast24Hours = async () => {
     let totalBugs = 0;
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    const formattedDate = yesterday.toISOString();
+
+    const formattedDate = yesterday.toISOString().split('T')[0];
 
     for (const project of config.teamProjects) {
         const url = `${config.azureUrl}/${project}/_apis/wit/wiql?api-version=6.0`;
