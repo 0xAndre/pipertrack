@@ -23,6 +23,10 @@ module.exports = () => {
         return await azureService.getRecentBugs();
     });
 
+    ipcMain.handle('get-bugs-done', async () => {
+        return await azureService.getDoneBugsLast24Hours();
+    });
+
     ipcMain.handle('get-build-duration-avg', async () => {
         return await azureService.getBuildDurationAvg();
     });
